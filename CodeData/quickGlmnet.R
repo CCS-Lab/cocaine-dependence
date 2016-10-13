@@ -1,6 +1,6 @@
 quickGlmnet <- function(dat_path = NULL,              # path to a data file
                         dependentVar = NULL,          # dependent variable (DV)
-                        depCate = NULL,               # category of DV: "binary" or "continuous"
+                        dependentCate = c("binary", "continuous"), # category of DV: "binary" or "continuous"
                         excludeVar = NULL,            # any variables to exlcude? (e.g., excludeVar = c("subject") )
                         categoricalVar = NULL,        # any categorical variables? (e.g., categoricalVar=c("Male) )
                         numIterations = 1000,         # Default=1000. Number of iterations
@@ -10,19 +10,27 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
                         whichSeq = 1,                 # Default=1. Which sequence to use for a test set? 1, 2, or 3
                         myAlpha = 1,                  # Default=1. myAlpha=1 for LASSO
                         nFolds  = 5,                  # Default=5. k-fold
+                        nCores = 1,                   # Default=1, number of cores for parallel processing
                         survivalRate_cutoff = 0.05) { # cutoff to be included in the beta matrix
   # To quickly and easily run glmnet (penalized linear or logistic regression) on a dataset
-  
   # Programmed by Woo-Young Ahn (u.osu.edu/ccsl), Feb 2016
+  # v0.1.3 (5/9/2016): some cosmetic changes + allow parallel processing
+  #
   # ** To cite this code in publication use:
+  # 
   # Ahn, W.-Y.∗, Ramesh∗, D., Moeller, F. G., & Vassileva, J. (2016) 
   #   Utility of machine learning approaches to identify behavioral markers 
   #   for substance use disorders: Impulsivity dimensions as predictors of 
   #   current cocaine dependence. Frontiers in Psychiatry.
   #
+  # Ahn, W.-Y. & Vassileva, J. (2016) Machine-learning identifies 
+  #   substance-specific behavioral markers for opiate and stimulant dependence. 
+  #   Drug and Alcohol Dependence, 161 (1), 247–257.
+  #
   # e.g., 
   # setwd("/Users/myID/myFolder)  # go to a folder that contains a data file
-  # fit = quickGlmnet("cocaineData_frontiers.txt", depCate="binary", "DIAGNOSIS", c("subject"), c("Male"), numIterations=100, outOfSample = T)
+  # fit = quickGlmnet("cocaineData_frontiers.txt", dependentVar="DIAGNOSIS", dependentCate="binary", 
+  #                   excludeVar = c("subject"), categoricalVar = c("Male"), numIterations=100, outOfSample = T)
   # 
   # fit = a list of length 4
   # fit[[1]] --> observed (column#1) and predicted (column#2) outcomes (test set, w/ min lambda)
@@ -32,7 +40,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   #
   # Check if required packages are installed (from John Kruschke's code)
   # If not, install them
-  reqPackages = c("glmnet", "ggplot2", "pROC", "corrplot")
+  reqPackages = c("glmnet", "ggplot2", "pROC", "corrplot", "doMC")
   have = reqPackages %in% rownames(installed.packages())
   if ( any(!have) ) { 
     cat("** Some required packages cannot be found. They are being installed now **\n")
@@ -43,11 +51,18 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   library(ggplot2)  # paper-ready figures
   library(pROC)     # ROC curves
   library(corrplot) # Correlation plots
+  library(doMC)     # parallel processing
   ##############################################################################
   
   # Detect OS 
   if ( Sys.info()["sysname"] == "Darwin" ) {  # if Mac OS X --> use 'quartz'
     x11 <- function( ... ) quartz( ... ) 
+  }
+  if (nCores > 1) {
+    registerDoMC(cores = nCores)
+    doParallel = TRUE
+  } else {
+    doParallel = FALSE
   }
   
   plotColor = c("black")     # Use your favorite color for your ROC curve
@@ -57,9 +72,9 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   rawDat = read.table( dat_path, header=T)
   
   # DV category - binary or continuous?
-  if (depCate == "binary") {
+  if (dependentCate == "binary") {
     glmnetDist = "binomial"
-  } else if (depCate == "continuous") {
+  } else if (dependentCate == "continuous") {
     glmnetDist = "gaussian"
   } else {
     stop("A dependent variable should be either a binary or continuous variable\n")
@@ -102,7 +117,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   numPredictors = dim(allDat)[2] + 1  # number of features (i.e, p). +1 because of intercept
   cat("# of participants=", numSubjs, ", # of measures=", numPredictors, "\n", sep="")
   cat(nFolds, "-folds cross-validation, ", "% of data for training=", round((1-1/splitBy)*100,1),"%\n", sep="")
-  cat("Alpha=", myAlpha, ". Note: Alpha=0 --> ridge, Alpha=1 --> LASSO, 0< Alpha <1 --> Elastic net \n")
+  cat("Alpha=", myAlpha, ". Note: Alpha=0 --> ridge, Alpha=1 --> LASSO, 0<Alpha<1 --> Elastic net \n")
   # lassoDat --> a matrix: 1st column=dependent variable, the other columns=independent variables
   lassoDat = cbind(depVar, allDat) 
   
@@ -162,11 +177,16 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   progressBar = txtProgressBar(min=1, max=numIterations, style=3)
   cat("Running ", numIterations, " iterations.\n")
   
+  lasso_glmnet = glmnet(x=trainVar, y=depVar_t, family=glmnetDist, standardize=F, alpha=myAlpha, maxit=10^6)  
+  quartz()
+  plot(lasso_glmnet)
+  
   for (rIdx in 1:numIterations) {
     # fit LASSO with the training set
-    lasso_glmnet = glmnet(x=trainVar, y=depVar_t, family=glmnetDist, standardize=F, alpha=myAlpha, maxit=10^6)  
-    lasso_cv_glmnet = cv.glmnet(x=trainVar, y=depVar_t, family=glmnetDist, standardize=F, alpha=myAlpha, nfolds=nFolds, maxit=10^6)
-    
+
+    lasso_cv_glmnet = cv.glmnet(x=trainVar, y=depVar_t, family=glmnetDist, standardize=F, alpha=myAlpha, nfolds=nFolds, 
+                                parallel = doParallel, maxit=10^6)
+    #plot(lasso_cv_glmnet)    
     ## test predictions on the test set (with min lambda)
     tmp_preddepVar_min = predict(lasso_glmnet, newx = testVar, s = lasso_cv_glmnet$lambda.min , type="response")
     
@@ -215,7 +235,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   # To plot ROC curves (train set) w/ ggplot2 
   dat_min_t = data.frame(Actual = as.numeric(depVar_t), Predicted = as.numeric(preddepVar_min_t))
   
-  if (depCate == "binary") { # if binary classification --> draw ROC curves
+  if (dependentCate == "binary") { # if binary classification --> draw ROC curves
     ### Drawing
     auc_figure_tmp = roc(Actual ~ Predicted, data = dat_min)
     auc_figure = as.numeric( auc_figure_tmp$auc )
@@ -253,7 +273,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
       xlab("1 - Specificity") + ylab("Sensitivity")
     print(h2)
     
-  } else if (depCate == "continuous") { # if linear regression --> draw correlation plots
+  } else if (dependentCate == "continuous") { # if linear regression --> draw correlation plots
     
     # Draw a ROC curve (test set)
     cor_figure = cor.test(~ Actual + Predicted, data = dat_min)
@@ -262,10 +282,10 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
     pValue_figure = ifelse(num==0, "< 2.200e-16" , paste0("= ", format(num, scientific=T, digits=4)) )
     
     x11() 
-    h1 = ggplot(dat_min, aes(x=Actual, y=Predicted, color=plotColor)) + 
+    h1 = ggplot(dat_min, aes(x=Actual, y=Predicted)) + 
       geom_point(shape=19, alpha=0.8, size=3) +
       geom_smooth(method=lm, aes(group=1), colour="black") +
-      ggtitle( paste0("Correlation between actual and predicted values: ", dependentVar, " (Test Set)") ) +
+      ggtitle( paste0("Correlation between actual and predicted values: ", dependentVar, " ", ggtitle_v) ) +
       annotate("text", label = paste("r = ", r_figure, ", p ", pValue_figure, sep=""), 
                x=Inf, y=Inf, size = 6, colour = plotColor, vjust=1, hjust=1) 
     print(h1)
@@ -278,10 +298,10 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
     pValue_figure_t = ifelse(num_t==0, "< 2.200e-16" , paste0("= ", format(num_t, scientific=T, digits=4)) )
     
     x11() 
-    h2 = ggplot(dat_min_t, aes(x=Actual, y=Predicted, color=plotColor)) + 
+    h2 = ggplot(dat_min_t, aes(x=Actual, y=Predicted)) + 
       geom_point(shape=19, alpha=0.8, size=3) +
       geom_smooth(method=lm, aes(group=1), colour="black") +
-      ggtitle( paste0("Correlation between actual and predicted values: ", dependentVar, " (Training Set)") ) +
+      ggtitle( paste0("Correlation between actual and predicted values: ", dependentVar, " ", ggtitle_t) ) +
       annotate("text", label = paste("r = ", r_figure_t, ", p ", pValue_figure_t, sep=""), 
                x=Inf, y=Inf, size = 6, colour = plotColor, vjust=1, hjust=1)
     print(h2)
