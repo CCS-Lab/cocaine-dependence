@@ -1,4 +1,4 @@
-quickGlmnet <- function(dat_path = NULL,              # path to a data file
+easyGlmnet <- function(dat_path = NULL,              # path to a data file
                         dependentVar = NULL,          # dependent variable (DV)
                         dependentCate = c("binary", "continuous"), # category of DV: "binary" or "continuous"
                         excludeVar = NULL,            # any variables to exlcude? (e.g., excludeVar = c("subject") )
@@ -15,6 +15,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   # To quickly and easily run glmnet (penalized linear or logistic regression) on a dataset
   # Programmed by Woo-Young Ahn (u.osu.edu/ccsl), Feb 2016
   # v0.1.3 (5/9/2016): some cosmetic changes + allow parallel processing
+  # v0.1.4 (10/19/2016): fixed an error 
   #
   # ** To cite this code in publication use:
   # 
@@ -335,7 +336,7 @@ quickGlmnet <- function(dat_path = NULL,              # path to a data file
   beta_1se = data.frame(mean=apply(all_beta_1se, 1, mean), lb = bounds_1se["lb",], ub = bounds_1se["ub", ], survival=mean_survivalRate_1se)
   rownames(beta_1se) = rownames(tmp_beta)
   # beta_min_cutoff --> remove variables w/ less than 5% survival rate
-  beta_1se_cutoff = data.frame(mean=mean_survivalRate_cutoff, lb = bounds_min["lb",], ub = bounds_min["ub", ], survival=mean_survivalRate_cutoff_1se)
+  beta_1se_cutoff = data.frame(mean=mean_survivalRate_cutoff, lb = bounds_min["lb",], ub = bounds_min["ub", ], survival=mean_survivalRate_1se)
   rownames(beta_1se_cutoff) = rownames(tmp_beta)
   
   # return output w/
