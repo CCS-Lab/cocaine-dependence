@@ -105,7 +105,6 @@ easyGlmnet <- function(dat_path = NULL,              # path to a data file
     contVar = indepVar
   }
   
-  ################################################
   # z-score continuous variables
   contVar = scale(contVar)
   
@@ -115,8 +114,6 @@ easyGlmnet <- function(dat_path = NULL,              # path to a data file
   } else {
     allDat = as.matrix( data.frame(cateVar, contVar) )
   }
-  ################################################
-  
   numSubjs = length(depVar) # number of participants (i.e., n)
   numPredictors = dim(allDat)[2] + 1  # number of features (i.e, p). +1 because of intercept
   cat("# of participants=", numSubjs, ", # of measures=", numPredictors, "\n", sep="")
@@ -339,7 +336,7 @@ easyGlmnet <- function(dat_path = NULL,              # path to a data file
   beta_1se = data.frame(mean=apply(all_beta_1se, 1, mean), lb = bounds_1se["lb",], ub = bounds_1se["ub", ], survival=mean_survivalRate_1se)
   rownames(beta_1se) = rownames(tmp_beta)
   # beta_min_cutoff --> remove variables w/ less than 5% survival rate
-  beta_1se_cutoff = data.frame(mean=mean_survivalRate_cutoff_1se, lb = bounds_1se["lb",], ub = bounds_1se["ub", ], survival=mean_survivalRate_1se)
+  beta_1se_cutoff = data.frame(mean=mean_survivalRate_cutoff, lb = bounds_min["lb",], ub = bounds_min["ub", ], survival=mean_survivalRate_1se)
   rownames(beta_1se_cutoff) = rownames(tmp_beta)
   
   # return output w/
