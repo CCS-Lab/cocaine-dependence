@@ -30,7 +30,7 @@ SHOW = False
 SAVE = True
 
 # Load data
-data = pd.read_table('./cocaineData_frontiers.txt')
+data = pd.read_table('../data/cocaine.txt')
 
 # Drop subjects column
 data = data.drop('subject', axis=1)
@@ -88,7 +88,7 @@ betas['sig'] = betas['survival']
 betas['dotColor1'] = 1 * (betas['mean'] != 0)
 betas['dotColor2'] = (1 * np.logical_and(betas['dotColor1'] > 0, betas['sig'] > 0)) + 1
 betas['dotColor'] = betas['dotColor1'] * betas['dotColor2']
-betas.to_csv('./betas.csv', index=False)
+betas.to_csv('./imgs/betas.csv', index=False)
 
 ##############################################################################
 # Replicating figure 2 - Done!
@@ -150,7 +150,7 @@ plt.legend(loc="lower right")
 if SHOW:
     plt.show()
 if SAVE:
-    plt.savefig('./train_roc_curve.png')
+    plt.savefig('./imgs/train_roc_curve.png')
 
 # Compute ROC curve and ROC area for each class
 n_classes = 2
@@ -175,7 +175,7 @@ plt.legend(loc="lower right")
 if SHOW:
     plt.show()
 if SAVE:
-    plt.savefig('./test_roc_curve.png')
+    plt.savefig('./imgs/test_roc_curve.png')
 
 ##############################################################################
 # Replicating figure 4 - Done!
@@ -239,7 +239,7 @@ plt.title('Distribution of AUCs (Training Set)')
 if SHOW:
     plt.show()
 if SAVE:
-    plt.savefig('./train_auc_distribution.png')
+    plt.savefig('./imgs/train_auc_distribution.png')
 
 plt.figure()
 plt.hist(all_test_aucs, bins=bins, color='white', edgecolor='black')
@@ -252,4 +252,4 @@ plt.title('Distribution of AUCs (Test Set)')
 if SHOW:
     plt.show()
 if SAVE:
-    plt.savefig('./test_auc_distribution.png')
+    plt.savefig('./imgs/test_auc_distribution.png')

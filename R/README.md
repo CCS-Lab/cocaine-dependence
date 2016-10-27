@@ -1,13 +1,20 @@
-# Cocaine
+# Cocaine Dependency
 
 Installation
 ------------
 
-```shell
-conda create --name cocaine python=3.5
-pip install -r requirements.txt
-```
+Run the following in a shell:
 
 ```shell
-source activate cocaine
+git clone https://github.com/CCS-Lab/cocaine-dependency.git
+cd cocaine-dependency/R
+```
+
+Getting started
+---------------
+
+Run the following in a shell:
+
+```shell
+r LASSO_cocaine_frontiers.R
 ```
