@@ -6,8 +6,8 @@ from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
 
+# from easyML.sample import sample_equal_proportion
 from sample import sample_equal_proportion
-
 
 # Set matplotlib settings
 mpl.get_backend()
