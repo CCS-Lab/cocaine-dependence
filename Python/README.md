@@ -24,5 +24,5 @@ Getting started
 Run the following in a shell:
 
 ```shell
-python eda.py
+python analysis.py
 ```
