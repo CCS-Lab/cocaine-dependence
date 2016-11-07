@@ -10,6 +10,14 @@ Run the following in a shell:
 ```shell
 git clone https://github.com/CCS-Lab/cocaine-dependence.git
 cd cocaine-dependence/R
+```
+
+Then run the following in an R terminal:
+
+```r
+if (packageVersion("devtools") < 1.6) {
+  install.packages("devtools")
+}
 devtools::install_github("CCS-Lab/easyml", subdir = "R")
 ```
 
