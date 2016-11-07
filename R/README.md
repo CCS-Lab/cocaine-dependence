@@ -10,6 +10,7 @@ Run the following in a shell:
 ```shell
 git clone https://github.com/CCS-Lab/cocaine-dependence.git
 cd cocaine-dependence/R
+devtools::install_github("CCS-Lab/easyml", subdir = "R")
 ```
 
 Getting started

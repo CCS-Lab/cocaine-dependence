@@ -10,12 +10,8 @@ Run the following in a shell:
 ```shell
 git clone https://github.com/CCS-Lab/cocaine-dependence.git
 cd cocaine-dependence/Python
-conda create --name cd python=3.5
-pip install -r requirements.txt
-```
-
-```shell
-source activate cd
+conda env create -f environment.yml
+source activate cocaine-dependence
 ```
 
 Getting started
