@@ -7,7 +7,7 @@ mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
-from easyml.factory import easy_glmnet
+from easyml.factory import easy_glmnet  # https://github.com/CCS-Lab/easyml
 
 
 if __name__ == "__main__":

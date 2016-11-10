@@ -1,4 +1,4 @@
-library(easyml)
+library(easyml) # https://github.com/CCS-Lab/easyml
 
 # Load data
 data("cocaine", package = "easyml")
