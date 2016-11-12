@@ -20,5 +20,5 @@ Getting started
 Run the following in a shell:
 
 ```shell
-python analysis.py
+python glmnet.py
 ```
