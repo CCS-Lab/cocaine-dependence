@@ -7,8 +7,11 @@ mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
+# The following information allows one to reproduce the results
+# of the analysis in Python.
+# NOTE: easyml may evolve which is why a commit ID is provided.
 # Repository: https://github.com/CCS-Lab/easyml
-# Commit ID:
+# Commit ID: b486fa85d9e73b6215e5a931e0684c81662e1c81
 from easyml.factory import easy_glmnet
 
 import os
