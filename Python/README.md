@@ -20,5 +20,11 @@ Getting started
 Run the following in a shell:
 
 ```shell
-python glmnet.py
+python analysis.py
+```
+
+or
+
+```shell
+python easy_glmnet.py
 ```

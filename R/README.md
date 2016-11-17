@@ -27,5 +27,11 @@ Getting started
 Run the following in a shell:
 
 ```shell
-r glmnet.R
+r easy_glmnet.R
+```
+
+or
+
+```shell
+r analysis.R
 ```
