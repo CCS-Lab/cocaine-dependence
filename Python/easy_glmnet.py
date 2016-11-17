@@ -12,11 +12,8 @@ plt.style.use('ggplot')
 # NOTE: easyml may evolve which is why a commit ID is provided.
 # Repository: https://github.com/CCS-Lab/easyml
 # Commit ID: b486fa85d9e73b6215e5a931e0684c81662e1c81
+# URL: https://github.com/CCS-Lab/easyml/tree/b486fa85d9e73b6215e5a931e0684c81662e1c81
 from easyml.factory import easy_glmnet
-
-import os
-os.chdir('Python')
-
 
 if __name__ == "__main__":
     # Load data
