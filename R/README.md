@@ -24,14 +24,28 @@ devtools::install_github("CCS-Lab/easyml", subdir = "R")
 Getting started
 ---------------
 
-Run the following in a shell:
+To achieve the original results, run the following in a shell:
 
 ```shell
 r easy_glmnet.R
 ```
 
-or
+or, 
 
 ```shell
 r analysis.R
+```
+
+Citation
+--------
+
+If you found our work useful please cite us in your work:
+
+```
+@inproceedings{TOBEEDITED,
+	title = {TOBEEDITED},
+	author = {TOBEEDITED},
+	eprint = {arXiv:TOBEEDITED},
+	year = {TOBEEDITED},
+}
 ```

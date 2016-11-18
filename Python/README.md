@@ -17,14 +17,28 @@ source activate cocaine-dependence
 Getting started
 ---------------
 
-Run the following in a shell:
+To achieve the original results, run the following in a shell:
 
 ```shell
 python analysis.py
 ```
 
-or
+or, 
 
 ```shell
 python easy_glmnet.py
+```
+
+Citation
+--------
+
+If you found our work useful please cite us in your work:
+
+```
+@inproceedings{TOBEEDITED,
+	title = {TOBEEDITED},
+	author = {TOBEEDITED},
+	eprint = {arXiv:TOBEEDITED},
+	year = {TOBEEDITED},
+}
 ```

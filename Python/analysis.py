@@ -30,7 +30,7 @@ SHOW = False
 SAVE = True
 
 # Load data
-data = pd.read_table('../data/cocaine.txt')
+data = pd.read_table('../data/cocaine_dependence.txt')
 
 # Drop subjects column
 data = data.drop('subject', axis=1)
