@@ -21,6 +21,8 @@ if (packageVersion("devtools") < 1.6) {
 devtools::install_github("CCS-Lab/easyml", subdir = "R")
 ```
 
+If you encounter a clear bug, please file a [minimial reproducible example](http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) on [github](https://github.com/CCS-Lab/cocaine-dependence/issues).
+
 Getting started
 ---------------
 
