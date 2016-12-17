@@ -14,7 +14,7 @@ conda env create -f environment.yml
 source activate cocaine-dependence
 ```
 
-If you encounter a clear bug, please file a [minimial reproducible example](http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) on [github](https://github.com/CCS-Lab/cocaine-dependence/issues).
+If you encounter a clear bug, please file a [minimal reproducible example](http://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) on [github](https://github.com/CCS-Lab/cocaine-dependence/issues).
 
 Getting started
 ---------------

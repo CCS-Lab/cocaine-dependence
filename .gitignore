@@ -2,3 +2,4 @@
 .idea
 .Rproj.user
 **/*.Rproj
+**/.Rhistory
