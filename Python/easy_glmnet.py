@@ -1,19 +1,21 @@
-import matplotlib as mpl
+"""
+The following information allows one to reproduce the results
+of the analysis in Python.
+NOTE: easyml may evolve which is why a commit ID is provided.
+Repository: https://github.com/CCS-Lab/easyml
+Commit ID: 8e6736c06921ce8c6cd34761bd5c6bf654bf4a74
+URL: https://github.com/CCS-Lab/easyml/tree/8e6736c06921ce8c6cd34761bd5c6bf654bf4a74
+"""
+import matplotlib as mpl; mpl.use('TkAgg')
+import matplotlib.pyplot as plt
+import os; os.chdir('./Python')
 import pandas as pd
 
-# Set matplotlib settings
-mpl.get_backend()
-mpl.use('TkAgg')
-import matplotlib.pyplot as plt
-plt.style.use('ggplot')
+from easyml.glmnet import easy_glmnet
 
-# The following information allows one to reproduce the results
-# of the analysis in Python.
-# NOTE: easyml may evolve which is why a commit ID is provided.
-# Repository: https://github.com/CCS-Lab/easyml
-# Commit ID: b486fa85d9e73b6215e5a931e0684c81662e1c81
-# URL: https://github.com/CCS-Lab/easyml/tree/b486fa85d9e73b6215e5a931e0684c81662e1c81
-from easyml.factory import easy_glmnet
+
+# Set matplotlib settings
+plt.style.use('ggplot')
 
 if __name__ == "__main__":
     # Load data
@@ -21,5 +23,6 @@ if __name__ == "__main__":
 
     # Analyze data
     easy_glmnet(cocaine_dependence, 'DIAGNOSIS',
-                family='binomial', exclude_variables=['subject'], categorical_variables=['Male'],
+                family='binomial', random_state=12345,
+                exclude_variables=['subject'], categorical_variables=['Male'], 
                 alpha=1, n_lambda=200, standardize=False, cut_point=0, max_iter=1e6)
