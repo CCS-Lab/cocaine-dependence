@@ -1,6 +1,6 @@
 # Cocaine Dependence
 
-[![DOI](https://img.shields.io/badge/DOI-10.3389/fpsyt.2016.00034-blue.svg)](https://doi.org/10.3389/fpsyt.2016.00034)
+[![Project Status: Inactive - The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatus.org/#inactive)[![DOI](https://img.shields.io/badge/DOI-10.3389/fpsyt.2016.00034-blue.svg)](https://doi.org/10.3389/fpsyt.2016.00034)
 
 Code and data for reproducing key results in the paper "[Utility of Machine-Learning Approaches to Identify Behavioral Markers for Substance Use Disorders: Impulsivity Dimensions as Predictors of Current Cocaine Dependence](http://journal.frontiersin.org/article/10.3389/fpsyt.2016.00034/full)".
 
