@@ -19,4 +19,4 @@ results$plot_coefficients_processed
 results$plot_predictions_train_mean
 results$plot_predictions_test_mean
 results$plot_metrics_train_mean
-results$plot_metrics_train_mean
+results$plot_metrics_test_mean
