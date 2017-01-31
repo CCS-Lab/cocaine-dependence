@@ -34,12 +34,6 @@ To achieve the original results, run the following in a shell:
 r easy_glmnet.R
 ```
 
-or, 
-
-```shell
-r analysis.R
-```
-
 Citation
 --------
 
