@@ -13,7 +13,7 @@ data("cocaine_dependence", package = "easyml")
 results <- easy_glmnet(cocaine_dependence, "diagnosis",
                        family = "binomial", preprocess = preprocess_scale, 
                        exclude_variables = c("subject"), categorical_variables = c("male"), 
-                       random_state = 12345, alpha = 1, nlambda = 200)
+                       random_state = 12345, model_args = list(alpha = 1.0))
 
 results$plot_coefficients_processed
 results$plot_predictions_train_mean
