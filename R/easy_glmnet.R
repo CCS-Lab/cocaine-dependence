@@ -15,8 +15,8 @@ results <- easy_glmnet(cocaine_dependence, "diagnosis",
                        exclude_variables = c("subject"), categorical_variables = c("male"), 
                        random_state = 12345, model_args = list(alpha = 1.0))
 
-results$plot_coefficients_processed
-results$plot_predictions_train_mean
-results$plot_predictions_test_mean
-results$plot_metrics_train_mean
-results$plot_metrics_test_mean
+results$plot_coefficients
+results$plot_model_performance_train
+results$plot_model_performance_test
+results$plot_roc_single_train_test_split_train
+results$plot_roc_single_train_test_split_test
